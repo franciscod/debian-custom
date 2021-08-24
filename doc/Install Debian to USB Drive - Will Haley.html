@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Install Debian to USB Drive - Will Haley</title>
+
+  <meta name="author" content="will">
+  <meta name="description" content="These instructions are not for a live install, but rather an installation of Debian to USB flash media. An added bonus here is that we’re going to first p...">
+
+  <link rel="stylesheet" href="Install%20Debian%20to%20USB%20Drive%20-%20Will%20Haley_files/main.css">
+  <link rel="stylesheet" href="Install%20Debian%20to%20USB%20Drive%20-%20Will%20Haley_files/custom.css">
+  <link rel="canonical" href="http://willhaley.com/blog/install-debian-usb/">
+
+  
+  <link rel="manifest" href="https://willhaley.com/manifest.json?version=1.1.6">
+
+  <link rel="shortcut icon" href="https://willhaley.com/favicon.ico?version=1.1.6">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://willhaley.com/favicon/apple-touch-icon.png?version=1.1.6">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://willhaley.com/favicon/favicon-32x32.png?version=1.1.6">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://willhaley.com/favicon/favicon-16x16.png?version=1.1.6">
+  <link rel="mask-icon" href="https://willhaley.com/favicon/safari-pinned-tab.svg?version=1.1.6">
+  <meta name="msapplication-config" content="/browserconfig.xml?version=1.1.6">
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+  <header class="site-header" role="banner">
+    <div class="wrapper" id="app">
+
+      <a class="site-title" href="https://willhaley.com/">Will Haley</a>
+
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a class="page-link" href="https://willhaley.com/about/">About</a>
+          <a class="page-link" href="https://willhaley.com/clippings/">Clippings</a>
+          <a class="page-link" href="https://willhaley.com/favorites/">Favorites</a>
+          <a class="page-link" href="https://willhaley.com/cv/">CV</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper">
+      
+<article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Install Debian to USB Drive</h1>
+    <p class="post-meta"><time datetime="2017-06-10T00:00:00+00:00" itemprop="datePublished">Jun 10, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+
+<p><span class="warning">These instructions are <strong>not</strong> for a live install, but rather an installation of Debian to USB flash media.</span></p>
+
+<p>An added bonus here is that we’re going to first prepare our Debian chroot inside an <code>img</code> file that we mount as a loopback device.</p>
+
+<p>We can then use that <code>img</code> file as a generic base image that we can deploy to a large number of USB drives.</p>
+
+<p>Why would you want to do this? Well, for one, the <code>img</code> 
+file helps reduce some mess and gives you an easy to manage file that 
+can be re-deployed again and again. This may also be ideal for creating a
+ generic image that will be reused on multiple machines. Like you might 
+do at a cybercafe where Debian is re-installed at each boot, or maybe 
+for a classroom.</p>
+
+<p>Thanks to Mike McCabe for the idea and for most of the steps detailed below.</p>
+
+<p>See other related articles here:</p>
+
+<ul>
+<li><a href="https://willhaley.com/blog/custom-debian-live-environment/">Create a Custom Debian Live Environment (CD or USB)</a></li>
+<li><a href="https://willhaley.com/blog/custom-debian-hard-drive-install/">Perform a Custom Debian Hard Drive Install</a>
+<!-- * [Install Debian to USB Drive](/blog/install-debian-usb/) --></li>
+</ul>
+
+<!-- more -->
+
+<p><strong><span class="warning">Warning</span></strong>: I have <strong><span class="warning">highlighted</span></strong>
+ all the places you should be in the chroot environment.&nbsp;Be 
+careful! Running some of these commands on your local environment 
+instead of in the chroot can cause issues.</p>
+
+<pre><code>sudo apt-get install \
+    debootstrap
+</code></pre>
+
+<p>Create the image file and format it.</p>
+
+<pre><code>fallocate -l 2G debian.img
+echo -e "o\nn\np\n1\n\n\nw" | sudo fdisk debian.img
+echo -e "a\nw\n" | sudo fdisk debian.img
+</code></pre>
+
+<p><strong>Take note of what is returned by the following command.</strong> For me, the loopback device is <code>/dev/loop0</code>, but it may vary for you. Update the instructions below accordingly if your loopback device address differs.</p>
+
+<pre><code>sudo losetup --partscan --show --find debian.img
+</code></pre>
+
+<p>Format the linux partition of our loopback device, much like we would do for a real physical device.</p>
+
+<pre><code>sudo mkfs.ext4 /dev/loop0p1
+</code></pre>
+
+<p>Mount the partition.</p>
+
+<pre><code>sudo mkdir -p /mnt/debian
+sudo mount /dev/loop0p1 /mnt/debian
+</code></pre>
+
+<p>Bootstrap the chroot.</p>
+
+<pre><code>sudo debootstrap \
+    --arch=i386 \
+    --variant=minbase \
+    stretch /mnt/debian http://ftp.us.debian.org/debian/
+</code></pre>
+
+<p>Mount special devices to the chroot. This will be important for installing grub later.</p>
+
+<pre><code>sudo mount -t proc /proc /mnt/debian/proc
+</code></pre>
+
+<pre><code>sudo mount -t sysfs /sys /mnt/debian/sys
+</code></pre>
+
+<pre><code>sudo mount -o bind /dev /mnt/debian/dev
+</code></pre>
+
+<p>Change root to the chroot environment.</p>
+
+<pre><code>sudo chroot /mnt/debian
+</code></pre>
+
+<p><strong><span class="warning">chroot</span></strong></p>
+
+<p>These packages are required at a minimum, but add more as needed.</p>
+
+<p><strong>When prompted to install grub to a device, do NOT install it. Simply hit “Enter” and choose not to install it to any devices.</strong></p>
+
+<pre><code>apt-get update &amp;&amp; \
+apt-get install --no-install-recommends \
+    linux-image-586 systemd-sysv \
+	grub2-common grub-pc
+</code></pre>
+
+<p><strong><span class="warning">chroot</span></strong></p>
+
+<p>We want <code>fstab</code> to mount <code>/</code> based on the disk label, and not a UUID or named disk like <code>/dev/sda</code>. That’s because, depending on the machine, the USB drive <em>may not be /dev/sda</em>, and also because the UUID will vary depending on where the <code>img</code> file is deployed.</p>
+
+<pre><code>echo "LABEL=DEBUSB / ext4 defaults 0 1" &gt; /etc/fstab
+</code></pre>
+
+<p><strong><span class="warning">chroot</span></strong></p>
+
+<pre><code>passwd root
+</code></pre>
+
+<p><strong><span class="warning">chroot</span></strong></p>
+
+<pre><code>grub-install \
+    --target=i386-pc \
+    --boot-directory=/boot \
+    --force-file-id \
+    --skip-fs-probe \
+    --recheck /dev/loop0
+</code></pre>
+
+<p><strong><span class="warning">chroot</span></strong></p>
+
+<pre><code>exit
+</code></pre>
+
+<p>Edit the <code>grub.cfg</code> file in the <code>img</code>.</p>
+
+<pre><code>sudo nano /mnt/debian/boot/grub/grub.cfg
+</code></pre>
+
+<p>Paste this content into the <code>grub.cfg</code> file.</p>
+
+<pre><code># grub.cfg
+set default="0"
+set timeout=10
+
+menuentry "Debian" {
+    linux /vmlinuz root=/dev/disk/by-label/DEBUSB quiet
+    initrd /initrd.img
+}
+</code></pre>
+
+<p>Label the image partition with the same name we used for <code>fstab</code> above.</p>
+
+<pre><code>sudo e2label /dev/loop0p1 DEBUSB
+</code></pre>
+
+<p>Set the hostname for the <code>img</code>.</p>
+
+<pre><code>echo "debian-usb" | sudo tee /mnt/debian/etc/hostname
+</code></pre>
+
+<p>Clean up special devices.</p>
+
+<pre><code>sudo umount /mnt/debian/{dev,sys,proc}
+</code></pre>
+
+<p>Unmount the loop device.</p>
+
+<pre><code>sudo umount /mnt/debian
+</code></pre>
+
+<p>Unmount the <code>img</code>.</p>
+
+<pre><code>sudo losetup -d /dev/loop0
+</code></pre>
+
+<p>Now you have a generic Debian installation that you can deploy to multiple devices like so.</p>
+
+<pre><code>dd if=debian.img of=/dev/sdz
+</code></pre>
+
+<h1 id="citations">Citations</h1>
+
+<ul>
+<li><a href="https://wiki.archlinux.org/index.php/Installing_Arch_Linux_on_a_USB_key">Installing Arch Linux on a USB key</a></li>
+<li><a href="http://www.wyae.de/docs/boot-usb3/">Boot from USB 3</a></li>
+<li><a href="https://www.cyberciti.biz/faq/linux-partition-howto-set-labels/">Label a Linux Partition</a></li>
+<li><a href="https://ubuntuforums.org/showthread.php?t=1529777">How to generate a grub.cfg that uses LABELs not UUID’s?</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/GRUB">GRUB</a></li>
+<li><a href="https://www.gnu.org/software/grub/manual/html_node/Multi_002dboot-manual-config.html">6.3 Multi-boot manual config</a></li>
+<li><a href="https://unix.stackexchange.com/questions/10010/safe-to-delete-system-map-files-in-boot">Safe to delete System.map-* files in /boot?</a></li>
+<li><a href="https://ubuntuforums.org/showthread.php?t=1530532">GRUB2 booting with labels (no UUID)</a></li>
+<li><a href="https://www.gnu.org/software/grub/manual/grub.html#search">16.3.64 search</a></li>
+<li><a href="https://ubuntuforums.org/showthread.php?t=1854142">error: no such device: grub rescue&gt;</a></li>
+<li><a href="https://askubuntu.com/questions/491604/grub-rescue-no-such-partition">grub rescue -&gt; no such partition [duplicate]</a></li>
+<li><a href="https://superuser.com/questions/130955/how-to-install-grub-into-an-img-file">How to install grub into an .img file?</a></li>
+<li><a href="https://unix.stackexchange.com/questions/120198/how-to-fix-boot-into-initramfs-prompt-and-mount-cant-read-etc-fstab-no-su">How to fix boot into initramfs prompt and “mount: can’t read ‘/etc/fstab’: No such file or directory” and “No init found”?</a></li>
+<li><a href="https://serverfault.com/questions/540492/sudo-echo-bla-etc-sysctl-conf-permission-denied"><code>sudo echo “bla” &gt;&gt; /etc/sysctl.conf</code> permission denied</a></li>
+<li><a href="https://superuser.com/questions/165116/mount-dev-proc-sys-in-a-chroot-environment">mount dev, proc, sys in a chroot environment?</a></li>
+</ul>
+
+  </div>
+
+  <div class="feedback">Feel free to <a target="_blank" href="https://twitter.com/messages/compose?recipient_id=142425885&amp;text=Regarding%20article%20http%3a%2f%2fwillhaley.com%2fblog%2finstall-debian-usb%2f%0a%0a">contact me</a> with questions or feedback regarding this article.</div>
+  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+</script>
+<span>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></span>
+<a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper">
+      <h2 class="footer-heading">Will Haley</h2>
+
+      <div class="footer-col-wrapper">
+        <div class="footer-col footer-col-1">
+          <ul class="contact-list">
+            <li>Will Haley</li>
+            <li><a href="mailto:"></a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col footer-col-2">
+          <ul class="social-media-list">
+
+            <li>
+              <a href="https://github.com/williamhaley"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path></svg>
+  </span><span class="username">williamhaley</span></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-col footer-col-3">
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+<script type="application/javascript">
+</script>
+
+
+  <script src="Install%20Debian%20to%20USB%20Drive%20-%20Will%20Haley_files/custom.js"></script>
+
+</body></html>
