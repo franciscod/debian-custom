@@ -13,3 +13,5 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     python3-venv \
     qemu-kvm \
     # done
+
+ln -s /usr/share/zoneinfo/America/Buenos_Aires /etc/localtime
