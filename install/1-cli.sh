@@ -8,10 +8,15 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     figlet \
     gcc \
     git \
+    inetutils-ping \
+    iproute2 \
+    man \
     nano \
+    network-manager \
+    network-manager-gnome \
     ranger \
     sudo \
-    vim \
     tmux \
+    vim \
     wget \
     # done
