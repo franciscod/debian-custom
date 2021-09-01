@@ -17,6 +17,7 @@ sudo mount /dev/loop0p1 $ROOT
 echo "entering the chroot..."
 # echo "please cd to /root/install and run ./all.sh"
 sudo chroot $ROOT /bin/bash -c "cd /root/install && ./all.sh"
+sudo chroot $ROOT /bin/bash -c "rm -rf /root/install"
 
 ./dechroot.sh
 
