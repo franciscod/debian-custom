@@ -8,6 +8,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     dbus-x11 \
     mousepad \
     pavucontrol \
+    pulseaudio \
     slim \
     xfce4 \
     xfce4-terminal \
