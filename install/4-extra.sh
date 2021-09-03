@@ -11,6 +11,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     python3 \
     python3-pip \
     python3-venv \
+    sgt-puzzles \
     qemu-kvm \
     # done
 
