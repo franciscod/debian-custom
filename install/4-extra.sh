@@ -4,15 +4,19 @@ set -ex
 source /etc/profile
 
 DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+    cifs-utils \
     firefox-esr \
+    fuse \
+    libfido2-dev \
+    libfuse2 \
     nodejs \
+    node-npm \
     openssh-client \
-    openssh-server \
     python3 \
     python3-pip \
     python3-venv \
-    sgt-puzzles \
     qemu-kvm \
+    sgt-puzzles \
     # done
 
 # remove default utc

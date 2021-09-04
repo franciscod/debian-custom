@@ -8,6 +8,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     caca-utils \
     curl \
     figlet \
+    fzf \
     gcc \
     git \
     htop \
@@ -21,10 +22,15 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     network-manager \
     network-manager-gnome \
     ranger \
+    ripgrep \
+    stow \
     sudo \
+    tig \
     tmux \
+    unzip \
     vim \
     wget \
+    zip \
     # done
 
 apt-file update
