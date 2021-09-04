@@ -5,9 +5,11 @@ source /etc/profile
 
 DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     apt-file \
+    bash-completion \
     caca-utils \
     curl \
     figlet \
+    file \
     fzf \
     gcc \
     git \
@@ -30,6 +32,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     unzip \
     vim \
     wget \
+    xz-utils \
     zip \
     # done
 
