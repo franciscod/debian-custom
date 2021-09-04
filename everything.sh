@@ -14,6 +14,8 @@ sudo mount /dev/loop0p1 $ROOT
 
 ./mount.sh
 
+make -C install/thirdparty
+
 echo "entering the chroot..."
 # echo "please cd to /root/install and run ./all.sh"
 sudo chroot $ROOT /bin/bash -c "cd /root/install && ./all.sh"
