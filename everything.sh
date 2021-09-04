@@ -29,3 +29,4 @@ echo "unmounting..."
 ./cleanup.sh
 
 echo "done! for testing with qemu: ./test.sh"
+echo "      image flash drives:    ./flash.sh"
