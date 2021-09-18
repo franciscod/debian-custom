@@ -5,4 +5,5 @@ ROOT=out/debian
 
 sudo umount $ROOT/{dev,sys,proc}
 sudo umount $ROOT
-sudo losetup -d /dev/loop0
+sudo losetup -d $(cat /tmp/debian-custom-loop)
+rm -f /tmp/debian-custom-loop

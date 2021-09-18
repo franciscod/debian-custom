@@ -71,8 +71,14 @@ EOF
 touch out/staging/DEBIAN_CUSTOM
 
 
-cp /usr/lib/syslinux/bios/isolinux.bin "out/staging/isolinux/"
-cp /usr/lib/syslinux/bios/* "out/staging/isolinux/"
+## arch
+# cp /usr/lib/syslinux/bios/isolinux.bin "out/staging/isolinux/"
+# cp /usr/lib/syslinux/bios/* "out/staging/isolinux/"
+# cp -r /usr/lib/grub/x86_64-efi/* "out/staging/boot/grub/x86_64-efi/"
+
+## debian
+cp /usr/lib/ISOLINUX/isolinux.bin "out/staging/isolinux/"
+cp /usr/lib/syslinux/modules/bios/* "out/staging/isolinux/"
 cp -r /usr/lib/grub/x86_64-efi/* "out/staging/boot/grub/x86_64-efi/"
 
 grub-mkstandalone \
@@ -84,18 +90,20 @@ grub-mkstandalone \
 
 (cd out/staging/EFI/boot && \
     dd if=/dev/zero of=efiboot.img bs=1M count=20 && \
-    mkfs.vfat efiboot.img && \
+    sudo mkfs.vfat efiboot.img && \
     mmd -i efiboot.img efi efi/boot && \
     mcopy -vi efiboot.img ../../../tmp/bootx64.efi ::efi/boot/
 )
 
+## arch
+    #-isohybrid-mbr /usr/lib/syslinux/bios/isohdpfx.bin \
 xorriso \
     -as mkisofs \
     -iso-level 3 \
     -o "out/debian-custom.iso" \
     -full-iso9660-filenames \
     -volid "DEBIAN_CUSTOM" \
-    -isohybrid-mbr /usr/lib/syslinux/bios/isohdpfx.bin \
+    -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin \
     -eltorito-boot \
         isolinux/isolinux.bin \
         -no-emul-boot \

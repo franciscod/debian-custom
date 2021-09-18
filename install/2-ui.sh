@@ -10,9 +10,11 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     pavucontrol \
     pulseaudio \
     slim \
+    thunar-archive-plugin \
     tigervnc-viewer \
     x11vnc \
     xfce4 \
+    xfce4-screenshooter \
     xfce4-terminal \
     xinit \
     xserver-xorg \

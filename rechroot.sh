@@ -5,7 +5,7 @@ ROOT=out/debian
 IMG=out/debian.img
 
 sudo losetup --partscan --show --find $IMG
-sudo mount /dev/loop0p1 $ROOT
+sudo mount $(cat /tmp/debian-custom-loop)p1 $ROOT
 
 sudo mount -t proc /proc $ROOT/proc
 sudo mount -t sysfs /sys $ROOT/sys

@@ -17,8 +17,12 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     inetutils-ping \
     iproute2 \
     less \
+    libarchive-tools \
+    locales \
     make \
     man \
+    manpages \
+    manpages-dev \
     nano \
     net-tools \
     network-manager \
@@ -37,3 +41,6 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     # done
 
 apt-file update
+
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+locale-gen

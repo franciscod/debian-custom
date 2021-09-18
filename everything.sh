@@ -7,8 +7,9 @@ rm -f out/debian.img
 mkdir -p $ROOT
 
 ./allocate.sh
-sudo mkfs.ext4 /dev/loop0p1
-sudo mount /dev/loop0p1 $ROOT
+
+sudo mkfs.ext4 $(cat /tmp/debian-custom-loop)p1
+sudo mount $(cat /tmp/debian-custom-loop)p1 $ROOT
 
 ./bootstrap.sh
 
