@@ -4,6 +4,7 @@ set -ex
 source /etc/profile
 
 DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+    age \
     apt-file \
     bash-completion \
     caca-utils \
@@ -27,6 +28,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     net-tools \
     network-manager \
     network-manager-gnome \
+    ntfs-3g \
     ranger \
     ripgrep \
     stow \

@@ -6,8 +6,10 @@ source /etc/profile
 DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     alsa-utils \
     dbus-x11 \
+    kleopatra \
     mousepad \
     pavucontrol \
+    pinentry-gnome3 \
     pulseaudio \
     slim \
     thunar-archive-plugin \
