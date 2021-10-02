@@ -13,6 +13,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     isolinux \
     mtools \
     squashfs-tools \
+    syslinux \
     syslinux-efi \
     xorriso \
     # done
