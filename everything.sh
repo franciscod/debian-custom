@@ -25,6 +25,7 @@ sudo chroot $ROOT /bin/bash -c "rm -rf /root/install"
 ./dechroot.sh
 
 echo "creating live image..."
+./squash.sh
 ./live.sh
 
 echo "unmounting..."

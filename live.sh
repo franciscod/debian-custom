@@ -4,9 +4,7 @@ set -ex
 ROOT=out/debian
 LIVE=out/staging/live
 
-mkdir -p out/{staging/{EFI/boot,boot/grub/x86_64-efi,isolinux,live},tmp}
-
-sudo mksquashfs $ROOT out/staging/live/filesystem.squashfs -e boot
+mkdir -p out/{staging/{EFI/boot,boot/grub/x86_64-efi,isolinux},tmp}
 
 cp $ROOT/boot/vmlinuz-* $LIVE/vmlinuz
 cp $ROOT/boot/initrd.img-* $LIVE/initrd
