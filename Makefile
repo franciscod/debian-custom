@@ -20,7 +20,7 @@ out/staging/live/filesystem.squashfs: out/debian.img
 	./squash.sh
 
 iso: out/debian-custom.iso
-out/debian-custom.iso: # out/staging/live/filesystem.squashfs
+out/debian-custom.iso: out/staging/live/filesystem.squashfs
 	./live.sh
 
 .PHONY: cleanup
