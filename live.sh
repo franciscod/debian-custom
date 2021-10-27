@@ -70,13 +70,13 @@ touch out/staging/DEBIAN_CUSTOM
 
 GRUB_EFI=/usr/lib/grub/x86_64-efi
 
-# arch
-ISOLINUX_BIN=/usr/lib/syslinux/bios/isolinux.bin
-ISOLINUX_BIOS_DIR=/usr/lib/syslinux/bios/
+# # arch
+# ISOLINUX_BIN=/usr/lib/syslinux/bios/isolinux.bin
+# ISOLINUX_BIOS_DIR=/usr/lib/syslinux/bios/
 
-## debian
-#ISOLINUX_BIN=/usr/lib/ISOLINUX/isolinux.bin
-#ISOLINUX_BIOS_DIR=/usr/lib/syslinux/modules/bios
+# debian
+ISOLINUX_BIN=/usr/lib/ISOLINUX/isolinux.bin
+ISOLINUX_BIOS_DIR=/usr/lib/syslinux/modules/bios
 
 cp "$ISOLINUX_BIN" "out/staging/isolinux/"
 cp "$ISOLINUX_BIOS_DIR"/* "out/staging/isolinux/"
@@ -96,10 +96,10 @@ grub-mkstandalone \
     mcopy -vi efiboot.img ../../../tmp/bootx64.efi ::efi/boot/
 )
 
-# arch
-ISOHDPFX=/usr/lib/syslinux/bios/isohdpfx.bin
-## debian
-# ISOHDPFX=/usr/lib/ISOLINUX/isohdpfx.bin
+# # arch
+# ISOHDPFX=/usr/lib/syslinux/bios/isohdpfx.bin
+# debian
+ISOHDPFX=/usr/lib/ISOLINUX/isohdpfx.bin
 
 xorriso \
     -as mkisofs \
