@@ -9,11 +9,11 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     # done
 
 # fasttrack for virtualbox
-apt install fasttrack-archive-keyring
+DEBIAN_FRONTEND=noninteractive apt install -y fasttrack-archive-keyring
 
 echo "" >> /etc/apt/sources.list
 echo "deb https://fasttrack.debian.net/debian-fasttrack/ bullseye-fasttrack main contrib" >> /etc/apt/sources.list
 echo "deb https://fasttrack.debian.net/debian-fasttrack/ bullseye-backports-staging main contrib" >> /etc/apt/sources.list
 
 apt update
-apt install virtualbox virtualbox-ext-pack
+DEBIAN_FRONTEND=noninteractive apt install -y virtualbox virtualbox-ext-pack
