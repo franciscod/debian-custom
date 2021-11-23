@@ -1,6 +1,20 @@
 #!/bin/bash
 set -ex
 
+DISTRO=$(cat /etc/issue | head -n 1 | cut -d' ' -f1)
+if [ "$DISTRO" -eq "Arch" ]; then
+    ISOLINUX_BIN=/usr/lib/syslinux/bios/isolinux.bin
+    ISOLINUX_BIOS_DIR=/usr/lib/syslinux/bios/
+    ISOHDPFX=/usr/lib/syslinux/bios/isohdpfx.bin
+elif [ "$DISTRO" -eq "Debian" ]; then
+    ISOLINUX_BIN=/usr/lib/ISOLINUX/isolinux.bin
+    ISOLINUX_BIOS_DIR=/usr/lib/syslinux/modules/bios
+    ISOHDPFX=/usr/lib/ISOLINUX/isohdpfx.bin
+else
+    echo "unknown distro: '$DISTRO'"
+    exit 1
+fi
+
 ROOT=out/debian
 LIVE=out/staging/live
 
@@ -70,14 +84,6 @@ touch out/staging/DEBIAN_CUSTOM
 
 GRUB_EFI=/usr/lib/grub/x86_64-efi
 
-# # arch
-# ISOLINUX_BIN=/usr/lib/syslinux/bios/isolinux.bin
-# ISOLINUX_BIOS_DIR=/usr/lib/syslinux/bios/
-
-# debian
-ISOLINUX_BIN=/usr/lib/ISOLINUX/isolinux.bin
-ISOLINUX_BIOS_DIR=/usr/lib/syslinux/modules/bios
-
 cp "$ISOLINUX_BIN" "out/staging/isolinux/"
 cp "$ISOLINUX_BIOS_DIR"/* "out/staging/isolinux/"
 cp -r "$GRUB_EFI"/* "out/staging/boot/grub/x86_64-efi/"
@@ -95,11 +101,6 @@ grub-mkstandalone \
     mmd -i efiboot.img efi efi/boot && \
     mcopy -vi efiboot.img ../../../tmp/bootx64.efi ::efi/boot/
 )
-
-# # arch
-# ISOHDPFX=/usr/lib/syslinux/bios/isohdpfx.bin
-# debian
-ISOHDPFX=/usr/lib/ISOLINUX/isohdpfx.bin
 
 xorriso \
     -as mkisofs \
