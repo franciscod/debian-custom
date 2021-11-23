@@ -4,11 +4,11 @@ set -ex
 source /etc/profile
 
 DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+    build-essential \
     gcc \
     git \
     golang \
     make \
-    build-essential \
     nodejs \
     node-npm \
     python3 \
