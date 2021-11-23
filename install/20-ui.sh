@@ -6,11 +6,13 @@ source /etc/profile
 DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     alsa-utils \
     dbus-x11 \
-    kleopatra \
+    firefox-esr \
+    libfido2-dev \
     mousepad \
+    network-manager-gnome \
     pavucontrol \
-    pinentry-gnome3 \
     pulseaudio \
+    sgt-puzzles \
     slim \
     thunar-archive-plugin \
     tigervnc-viewer \

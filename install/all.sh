@@ -3,7 +3,7 @@ set -ex
 
 cd /root/install
 
-for f in ?-*.sh; do
+for f in ??-*.sh; do
     echo "running $f"
     ./$f
 done

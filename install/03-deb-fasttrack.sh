@@ -3,11 +3,6 @@ set -ex
 
 source /etc/profile
 
-DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
-    cmatrix \
-    tint \
-    # done
-
 # fasttrack for virtualbox
 DEBIAN_FRONTEND=noninteractive apt install -y fasttrack-archive-keyring
 
