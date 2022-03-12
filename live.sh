@@ -2,11 +2,11 @@
 set -ex
 
 DISTRO=$(cat /etc/issue | head -n 1 | cut -d' ' -f1)
-if [ "$DISTRO" -eq "Arch" ]; then
+if [[ "$DISTRO" -eq "Arch" ]]; then
     ISOLINUX_BIN=/usr/lib/syslinux/bios/isolinux.bin
     ISOLINUX_BIOS_DIR=/usr/lib/syslinux/bios/
     ISOHDPFX=/usr/lib/syslinux/bios/isohdpfx.bin
-elif [ "$DISTRO" -eq "Debian" ]; then
+elif [[ "$DISTRO" -eq "Debian" ]]; then
     ISOLINUX_BIN=/usr/lib/ISOLINUX/isolinux.bin
     ISOLINUX_BIOS_DIR=/usr/lib/syslinux/modules/bios
     ISOHDPFX=/usr/lib/ISOLINUX/isohdpfx.bin
