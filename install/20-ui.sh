@@ -9,6 +9,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     firefox-esr \
     libfido2-dev \
     mousepad \
+    mpv \
     network-manager-gnome \
     pavucontrol \
     pulseaudio \
@@ -21,7 +22,9 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     xfce4-screenshooter \
     xfce4-terminal \
     xinit \
+    xournal \
     xserver-xorg \
     xserver-xorg-core \
     xterm \
+    zathura \
     # done
