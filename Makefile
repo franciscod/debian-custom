@@ -12,7 +12,7 @@ out/debian.img:
 	./mount.sh
 	echo "entering the chroot..."
 	sudo chroot ${ROOT} /bin/bash -c "cd /root/install && ./all.sh"
-	sudo chroot ${ROOT} /bin/bash -c "rm -rf /root/install"
+	sudo chroot ${ROOT} /bin/bash -c "/bin/rm -rf /root/install"
 	./dechroot.sh
 
 squash: out/staging/live/filesystem.squashfs
