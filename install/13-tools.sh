@@ -10,7 +10,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     htop \
     openssh-client \
     qemu-kvm \
-    qrencode \ 
+    qrencode \
     ranger \
     ripgrep \
     stow \
