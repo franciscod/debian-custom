@@ -14,3 +14,7 @@ popd
 LIBRESPRITE=$(pwd)/thirdparty/dl/LibreSprite.AppImage
 cp $LIBRESPRITE /usr/local/bin/libresprite
 chmod +x /usr/local/bin/libresprite
+
+GODOT=$(pwd)/thirdparty/dl/Godot_v3.4.3-stable_x11.64.zip
+cp $GODOT /usr/local/bin/godot
+chmod +x /usr/local/bin/godot
