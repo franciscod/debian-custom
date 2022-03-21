@@ -3,7 +3,7 @@ set -ex
 
 ROOT=out/debian
 
-sudo debootstrap --arch=amd64 --variant=minbase bullseye $ROOT
+sudo debootstrap --arch=amd64 --variant=minbase bookworm $ROOT
 sudo cp -r install/ $ROOT/root/install
 
 echo "debian-custom" | sudo tee $ROOT/etc/hostname
