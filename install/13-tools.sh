@@ -7,6 +7,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     age \
     figlet \
     fzf \
+    gnupg \
     htop \
     openssh-client \
     qemu-kvm \
