@@ -15,4 +15,5 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     ranger \
     ripgrep \
     stow \
+    websockify \
     # done

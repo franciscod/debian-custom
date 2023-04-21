@@ -5,7 +5,6 @@ source /etc/profile
 
 DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     file \
-    fuse \
     libarchive-tools \
     libfuse2 \
     ntfs-3g \
@@ -13,3 +12,4 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     xz-utils \
     zip \
     # done
+    # fuse3 \

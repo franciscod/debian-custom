@@ -11,6 +11,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     mousepad \
     mpv \
     network-manager-gnome \
+    novnc \
     pavucontrol \
     pulseaudio \
     sgt-puzzles \
@@ -18,6 +19,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     thunar-archive-plugin \
     tigervnc-viewer \
     x11vnc \
+    x11-apps \
     xfce4 \
     xfce4-screenshooter \
     xfce4-terminal \

@@ -2,7 +2,7 @@
 set -ex
 
 ROOT=out/debian
-IMG=out/debian.img
+IMG=/tmp/debian.img
 
 sudo losetup --partscan --show --find $IMG > /tmp/debian-custom-loop
 sudo mount $(cat /tmp/debian-custom-loop)p1 $ROOT

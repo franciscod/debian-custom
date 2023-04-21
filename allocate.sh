@@ -1,9 +1,9 @@
 #!/bin/bash
 set -ex
 
-IMG=out/debian.img
+IMG=/tmp/debian.img
 
-fallocate -l 4000M $IMG
+fallocate -l 6000M $IMG
 echo -e "o\n" | sudo fdisk $IMG
 echo -e "n\np\n1\n\n\nw" | sudo fdisk $IMG
 echo -e "a\nw\n" | sudo fdisk $IMG

@@ -11,6 +11,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     make \
     nodejs \
     node-npm \
+    php \
     python3 \
     python3-pip \
     python3-venv \

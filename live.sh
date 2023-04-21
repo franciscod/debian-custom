@@ -1,11 +1,17 @@
 #!/bin/bash
 set -ex
 
+ROOT=out/debian
+LIVE=out/staging/live
+
+mkdir -p out/{staging/{EFI/boot,boot/grub/x86_64-efi,isolinux,etc},tmp}
+
 DISTRO=$(cat /etc/issue | head -n 1 | cut -d' ' -f1)
 if [[ "$DISTRO" -eq "Arch" ]]; then
     ISOLINUX_BIN=/usr/lib/syslinux/bios/isolinux.bin
     ISOLINUX_BIOS_DIR=/usr/lib/syslinux/bios/
     ISOHDPFX=/usr/lib/syslinux/bios/isohdpfx.bin
+    cp /usr/share/memtest86+/memtest.iso out/staging/etc/
 elif [[ "$DISTRO" -eq "Debian" ]]; then
     ISOLINUX_BIN=/usr/lib/ISOLINUX/isolinux.bin
     ISOLINUX_BIOS_DIR=/usr/lib/syslinux/modules/bios
@@ -14,11 +20,6 @@ else
     echo "unknown distro: '$DISTRO'"
     exit 1
 fi
-
-ROOT=out/debian
-LIVE=out/staging/live
-
-mkdir -p out/{staging/{EFI/boot,boot/grub/x86_64-efi,isolinux},tmp}
 
 cp $ROOT/boot/vmlinuz-* $LIVE/vmlinuz
 cp $ROOT/boot/initrd.img-* $LIVE/initrd
@@ -41,16 +42,20 @@ MENU COLOR msg07        37;40   #90ffffff #a0000000 std
 MENU COLOR tabmsg       31;40   #30ffffff #00000000 std
 
 LABEL linux
-  MENU LABEL Debian Custom [BIOS/ISOLINUX]
+  MENU LABEL ^Debian Custom [BIOS/ISOLINUX]
   MENU DEFAULT
   KERNEL /live/vmlinuz
   APPEND initrd=/live/initrd boot=live toram
 
-LABEL linux
-  MENU LABEL Debian Custom [BIOS/ISOLINUX] (nomodeset)
-  MENU DEFAULT
+LABEL linuxnms
+  MENU LABEL Debian Custom [BIOS/ISOLINUX] (^nomodeset)
   KERNEL /live/vmlinuz
   APPEND initrd=/live/initrd boot=live nomodeset toram
+
+LABEL memtest
+  MENU LABEL ^Memtest86+
+  KERNEL /isolinux/memdisk
+  APPEND initrd=/etc/memtest.iso iso
 EOF
 
 
@@ -97,7 +102,7 @@ grub-mkstandalone \
 
 (cd out/staging/EFI/boot && \
     dd if=/dev/zero of=efiboot.img bs=1M count=20 && \
-    sudo mkfs.vfat efiboot.img && \
+    mkfs.vfat efiboot.img && \
     mmd -i efiboot.img efi efi/boot && \
     mcopy -vi efiboot.img ../../../tmp/bootx64.efi ::efi/boot/
 )

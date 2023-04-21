@@ -3,7 +3,7 @@ ROOT=out/debian
 default: iso cleanup
 
 
-out/debian.img:
+/tmp/debian.img:
 	mkdir -p ${ROOT}
 	./allocate.sh
 	./mountloop.sh
@@ -12,11 +12,14 @@ out/debian.img:
 	./mount.sh
 	echo "entering the chroot..."
 	sudo chroot ${ROOT} /bin/bash -c "cd /root/install && ./all.sh"
+	make cont
+
+cont:
 	sudo chroot ${ROOT} /bin/bash -c "/bin/rm -rf /root/install"
 	./dechroot.sh
 
 squash: out/staging/live/filesystem.squashfs
-out/staging/live/filesystem.squashfs: out/debian.img
+out/staging/live/filesystem.squashfs: /tmp/debian.img
 	./squash.sh
 
 iso: out/debian-custom.iso
@@ -30,3 +33,7 @@ cleanup:
 .PHONY: wipe
 wipe:
 	./wipe.sh
+
+.PHONY: test
+test:
+	./test.sh
