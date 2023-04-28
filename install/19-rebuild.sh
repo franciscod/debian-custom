@@ -11,9 +11,11 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     grub-efi-amd64-bin \
     grub-pc-bin \
     isolinux \
+    memtest86+ \
     mtools \
     squashfs-tools \
     syslinux \
+    syslinux-common \
     syslinux-efi \
     xorriso \
     # done

@@ -7,15 +7,17 @@ LIVE=out/staging/live
 mkdir -p out/{staging/{EFI/boot,boot/grub/x86_64-efi,isolinux,etc},tmp}
 
 DISTRO=$(cat /etc/issue | head -n 1 | cut -d' ' -f1)
-if [[ "$DISTRO" -eq "Arch" ]]; then
+if [[ "$DISTRO" == "Arch" ]]; then
+    ISOHDPFX=/usr/lib/syslinux/bios/isohdpfx.bin
     ISOLINUX_BIN=/usr/lib/syslinux/bios/isolinux.bin
     ISOLINUX_BIOS_DIR=/usr/lib/syslinux/bios/
-    ISOHDPFX=/usr/lib/syslinux/bios/isohdpfx.bin
-    cp /usr/share/memtest86+/memtest.iso out/staging/etc/
-elif [[ "$DISTRO" -eq "Debian" ]]; then
+    cp /usr/share/memtest86+/memtest.iso out/staging/etc/memtest.iso
+elif [[ "$DISTRO" == "Debian" ]]; then
+    ISOHDPFX=/usr/lib/ISOLINUX/isohdpfx.bin
     ISOLINUX_BIN=/usr/lib/ISOLINUX/isolinux.bin
     ISOLINUX_BIOS_DIR=/usr/lib/syslinux/modules/bios
-    ISOHDPFX=/usr/lib/ISOLINUX/isohdpfx.bin
+    cp "/usr/lib/syslinux/memdisk" "out/staging/isolinux/"
+    cp /usr/lib/memtest86+/memtest86+x64.iso out/staging/etc/memtest.iso
 else
     echo "unknown distro: '$DISTRO'"
     exit 1
@@ -102,7 +104,7 @@ grub-mkstandalone \
 
 (cd out/staging/EFI/boot && \
     dd if=/dev/zero of=efiboot.img bs=1M count=20 && \
-    mkfs.vfat efiboot.img && \
+    sudo mkfs.vfat efiboot.img && \
     mmd -i efiboot.img efi efi/boot && \
     mcopy -vi efiboot.img ../../../tmp/bootx64.efi ::efi/boot/
 )
