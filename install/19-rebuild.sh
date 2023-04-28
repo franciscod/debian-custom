@@ -13,6 +13,7 @@ DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
     isolinux \
     memtest86+ \
     mtools \
+    ovmf \
     squashfs-tools \
     syslinux \
     syslinux-common \
