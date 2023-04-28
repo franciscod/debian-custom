@@ -78,6 +78,11 @@ menuentry "Debian Custom [EFI/GRUB] (nomodeset)" {
     linux ($root)/live/vmlinuz boot=live nomodeset toram
     initrd ($root)/live/initrd
 }
+
+menuentry "Memtest86+" {
+    loopback loop /etc/memtest.iso
+    chainloader (loop)/EFI/BOOT/bootx64.efi
+}
 EOF
 
 cat <<'EOF' >out/tmp/grub-standalone.cfg
