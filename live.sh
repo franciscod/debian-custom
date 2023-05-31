@@ -12,12 +12,12 @@ if [[ "$DISTRO" == "Arch" ]]; then
     ISOLINUX_BIN=/usr/lib/syslinux/bios/isolinux.bin
     ISOLINUX_BIOS_DIR=/usr/lib/syslinux/bios/
     cp /usr/share/memtest86+/memtest.iso out/staging/etc/memtest.iso
-elif [[ "$DISTRO" == "Debian" ]]; then
+elif [[ "$DISTRO" == "Debian" || "$DISTRO" == "Ubuntu" ]]; then
     ISOHDPFX=/usr/lib/ISOLINUX/isohdpfx.bin
     ISOLINUX_BIN=/usr/lib/ISOLINUX/isolinux.bin
     ISOLINUX_BIOS_DIR=/usr/lib/syslinux/modules/bios
     cp "/usr/lib/syslinux/memdisk" "out/staging/isolinux/"
-    cp /usr/lib/memtest86+/memtest86+x64.iso out/staging/etc/memtest.iso
+    cp /usr/lib/memtest86+/memtest86+.iso out/staging/etc/memtest.iso
 else
     echo "unknown distro: '$DISTRO'"
     exit 1
